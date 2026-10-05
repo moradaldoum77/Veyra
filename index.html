@@ -1,0 +1,201 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Veyra · Smart City Digital Twin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#060d1b;--pn:rgba(11,21,40,.84);--sd:#0a1427;--bd:rgba(130,175,225,.17);--tx:#e8f0fa;--mu:#8da2bd;--cy:#2ed3e6;--am:#ffa63d;--rd:#ff5d5d;--gn:#35d39a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--bg);color:var(--tx);font:13px/1.45 Inter,system-ui,-apple-system,'Segoe UI',sans-serif;overflow-x:hidden}
+.app{display:grid;grid-template-columns:208px minmax(0,1fr);height:100%}
+.sb{background:var(--sd);border-right:1px solid var(--bd);padding:18px 12px;display:flex;flex-direction:column;gap:4px}
+.logo{display:flex;gap:10px;align-items:center;font-weight:800;font-size:19px;letter-spacing:-.02em;padding:2px 8px 4px}
+.tag{color:var(--mu);font-size:11px;padding:0 8px 16px}
+.nv{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:0;background:none;color:var(--mu);font:600 13px Inter,system-ui,sans-serif;cursor:pointer;text-align:left;transition:.2s}
+.nv:hover{color:var(--tx);background:rgba(255,255,255,.04)}.nv.on{color:var(--cy);background:rgba(46,211,230,.1);box-shadow:inset 2px 0 var(--cy)}
+.nv svg{width:17px;height:17px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.note{margin-top:auto;color:var(--mu);font-size:11px;padding:10px 8px;border-top:1px solid var(--bd)}
+.mn{display:flex;flex-direction:column;min-width:0;min-height:0;height:100%}
+.tp{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;flex-wrap:wrap}
+h1{margin:0;font-size:20px;letter-spacing:-.02em}.sub{color:var(--mu);margin-top:2px}
+.ctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.live{display:inline-flex;align-items:center;gap:7px;color:var(--gn);font-weight:700;font-size:12px}.live i{width:7px;height:7px;border-radius:50%;background:var(--gn);box-shadow:0 0 10px var(--gn);animation:pl 2s infinite}
+@keyframes pl{50%{opacity:.35}}
+.clk{font-variant-numeric:tabular-nums;font-weight:700;padding:7px 10px;border:1px solid var(--bd);border-radius:9px;background:rgba(255,255,255,.04)}
+.b{background:rgba(255,255,255,.05);border:1px solid var(--bd);color:var(--tx);border-radius:9px;padding:7px 12px;font:600 12px Inter,system-ui,sans-serif;cursor:pointer;transition:.2s}.b:hover{border-color:var(--cy);color:var(--cy)}.b.on{background:rgba(46,211,230,.14);border-color:var(--cy);color:var(--cy)}
+.b.am.on{background:rgba(255,166,61,.14);border-color:var(--am);color:var(--am)}
+.stage{position:relative;flex:1;min-height:380px;margin:0 20px;border:1px solid var(--bd);border-radius:18px;overflow:hidden;background:radial-gradient(900px 520px at 50% 15%,#12305a,#060d1b)}
+canvas{width:100%;height:100%;display:block;touch-action:none;cursor:grab}canvas:active{cursor:grabbing}
+.ov{position:absolute;pointer-events:none}.ov>*{pointer-events:auto}
+.kp{top:12px;left:12px;right:12px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:780px}
+.kc{background:var(--pn);backdrop-filter:blur(10px);border:1px solid var(--bd);border-radius:14px;padding:10px 12px;transition:.3s}.kc:hover{border-color:rgba(46,211,230,.45);transform:translateY(-2px)}
+.kc .l{color:var(--mu);font-size:11px;font-weight:600}.kc .v{font-size:21px;font-weight:700;letter-spacing:-.02em}.kc .v small{font-size:11px;color:var(--mu);font-weight:500}
+.kc .r{display:flex;justify-content:space-between;align-items:flex-end;gap:6px}.kc svg{width:70px;height:22px}
+.d{font-size:11px;font-weight:700}.up{color:var(--gn)}.dn{color:var(--rd)}.ne{color:var(--mu)}
+.ly{left:12px;bottom:12px;display:flex;flex-direction:column;gap:8px}.ly .row{display:flex;gap:6px;flex-wrap:wrap}
+.lgd{background:var(--pn);border:1px solid var(--bd);border-radius:10px;padding:6px 10px;color:var(--mu);font-size:11px;max-width:420px}
+.info{right:12px;bottom:12px;width:250px;max-width:46%;background:var(--pn);backdrop-filter:blur(10px);border:1px solid var(--bd);border-radius:14px;padding:12px 14px}
+.info h4{margin:0 0 2px;font-size:14px}.info .t{color:var(--cy);font-size:11px;font-weight:700;margin-bottom:6px}.info .hint{color:var(--mu)}
+.rw{display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-top:1px solid var(--bd);font-size:12px}.rw span:first-child{color:var(--mu)}
+.dock{display:grid;grid-template-columns:1.05fr 1.2fr 1fr;gap:12px;padding:12px 20px 18px}
+.card{background:var(--sd);border:1px solid var(--bd);border-radius:14px;padding:12px 14px;overflow:auto;max-height:262px}
+.card h3{margin:0 0 8px;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--mu)}
+.sl{display:grid;grid-template-columns:104px 1fr 46px;gap:8px;align-items:center;margin:6px 0;font-size:12px}.sl b{text-align:right;font-variant-numeric:tabular-nums}
+input[type=range]{accent-color:var(--cy);width:100%;min-width:0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.al{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-top:1px solid var(--bd)}.al i{width:8px;height:8px;border-radius:50%;margin-top:5px;flex:none}
+.lgn{display:flex;gap:12px;flex-wrap:wrap;margin-top:4px;font-size:11px;color:var(--mu)}.lgn i{display:inline-block;width:10px;height:3px;border-radius:2px;margin-right:5px;vertical-align:middle}
+table{width:100%;border-collapse:collapse;font-size:12px}td,th{padding:4px 4px;text-align:right;border-top:1px solid var(--bd)}th{color:var(--mu);font-weight:600;border:0}td:first-child,th:first-child{text-align:left}
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:#12305a;border:1px solid var(--cy);padding:9px 16px;border-radius:10px;opacity:0;transition:.3s;pointer-events:none;z-index:9;font-weight:600}#toast.s{opacity:1;transform:translate(-50%,0)}
+.nogl{position:absolute;inset:0;display:none;place-items:center;text-align:center;color:var(--mu);padding:30px}
+:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:1000px){.dock{grid-template-columns:1fr 1fr}.dock .card:nth-child(3){grid-column:1/-1}}
+@media (max-width:860px){html,body{height:auto}.app{grid-template-columns:1fr;height:auto;min-height:100%}.sb{flex-direction:row;overflow-x:auto;padding:8px;border-right:0;border-bottom:1px solid var(--bd)}.logo,.tag,.note{display:none}.nv{white-space:nowrap}.mn{height:auto}.stage{min-height:480px;margin:0 12px}.tp,.dock{padding-left:12px;padding-right:12px}.dock{grid-template-columns:1fr}.kp{grid-template-columns:repeat(2,minmax(0,1fr))}.info{width:210px}.card{max-height:none}}
+</style></head><body>
+<div class="app"><aside class="sb"><div class="logo"><svg width="28" height="28" viewBox="0 0 28 28"><rect width="28" height="28" rx="8" fill="#0f2a4d"/><path d="M6 8l8 13 8-13" fill="none" stroke="#2ed3e6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14" cy="8" r="2" fill="#ffa63d"/></svg>Veyra</div><div class="tag">Intelligence for the cities of tomorrow.</div><nav id="nav" aria-label="Main"></nav><div class="note">Simulated demo data. Not live city data.</div></aside>
+<main class="mn"><div class="tp"><div><h1 id="ttl"></h1><div class="sub" id="sub"></div></div><div class="ctl"><span class="live"><i></i>Simulation live</span><span class="clk" id="clk">19:00</span><button class="b" id="pp" aria-label="Play or pause">Pause</button><button class="b" id="sp">1×</button><button class="b" id="rc">Reset view</button></div></div>
+<div class="stage" id="stage"><canvas id="cv" aria-label="Interactive 3D city"></canvas><div class="nogl" id="nogl">WebGL isn't available in this browser, so the 3D city can't be shown. The metrics and controls below still work.</div>
+<div class="ov kp" id="kp"></div><div class="ov ly"><div class="row" id="ly"></div><div class="lgd" id="lgd"></div></div><div class="ov info" id="info"></div></div>
+<div class="dock"><div class="card" id="c1"></div><div class="card" id="c2"></div><div class="card" id="c3"></div></div></main></div><div id="toast" role="status"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const $=s=>document.querySelector(s),cl=(v,a,b)=>Math.min(b,Math.max(a,v));
+const DEF={pop:100,veh:100,ren:34,transit:100,green:30,industry:50,heat:0,acc:0,dis:0};
+let S={...DEF,hour:19,playing:true,speed:1,page:'overview',layer:'overview'},base=null;
+try{const j=JSON.parse(localStorage.getItem('veyra')||'null');if(j){Object.assign(S,j.S);base=j.base}}catch(e){}
+const save=()=>{try{localStorage.setItem('veyra',JSON.stringify({S,base}))}catch(e){}};
+/* ---------- simulation engine (deterministic formulas) ---------- */
+const g=(h,m,s)=>Math.exp(-((h-m)**2)/(2*s*s)),hfOf=h=>Math.min(1,.35+.55*(g(h,8.5,1.6)+g(h,17.5,1.9)));
+const eAt=(s,h)=>89*s.pop/100*(.55+.5*hfOf(h))*(.8+s.industry/250)*(1+s.heat*.012);
+function M(s,h){const hf=hfOf(h),modal=cl(1-.002*(s.transit-100),.7,1.1),dem=s.veh/100*s.pop/100*hf*modal;
+const veh=Math.round(33000*dem),cong=Math.round(cl(100*Math.pow(dem,1.6)*.62+(s.acc?12:0),0,100)),speed=Math.round(cl(58-.42*cong-(s.acc?3:0),8,60)),inc=(s.acc?3:0)+Math.round(cong/30);
+const energy=+eAt(s,h).toFixed(1);let peak=0;for(let i=0;i<24;i++)peak=Math.max(peak,eAt(s,i));
+const ren=s.ren,renMW=+(energy*ren/100).toFixed(1),eff=Math.round(cl(95-(100-ren)*.25-Math.max(0,hf-.7)*20-s.industry*.1,0,100));
+const aqi=Math.round(cl(20+veh/1000*.55+s.industry*.2+(100-ren)*.05-s.green*.18,8,300)),co2=+(veh*.0021+energy*(1-ren/100)*.38+s.industry*.12).toFixed(1),temp=+(12+8*Math.sin((h-9)/24*2*Math.PI)+s.heat).toFixed(1);
+const tv=120*s.transit/100*(s.dis?.7:1),util=Math.round(cl(68*(s.pop/100)*(hf/.75)*Math.pow(100/(tv/1.2),.9)/100*100*(1+(1-modal)*1.5)/1,3,120)),delay=+(2+Math.max(0,util-60)*.08+(s.dis?4:0)).toFixed(1),teff=Math.round(cl(100-Math.abs(util-65)*.9-delay*2,0,100));
+return{veh,cong,speed,inc,energy,renMW,ren,peak:+peak.toFixed(1),eff,aqi,co2,temp,green:s.green,tveh:Math.round(tv),delay,util,teff}}
+const MD={veh:['Active vehicles','',0],speed:['Avg speed',' km/h',1],cong:['Congestion','%',0],inc:['Incidents','',0],energy:['Energy demand',' MW',0],ren:['Renewable share','%',1],peak:['Est. peak',' MW',0],eff:['Efficiency score','',1],aqi:['Air quality',' AQI',0],co2:['CO₂ estimate',' t/h',0],temp:['Temperature','°C',2],green:['Green space','%',1],tveh:['Transit vehicles','',1],delay:['Avg delay',' min',0],util:['Network load','%',0],teff:['Transit efficiency','',1]};
+const SL={pop:['Population',60,180],veh:['Vehicle density',40,160],ren:['Renewables',0,100],transit:['Transit capacity',40,200],green:['Green space',5,80],industry:['Industry',10,120]};
+const PG={overview:{t:'Overview',l:'overview',k:['veh','energy','aqi','util'],sl:['pop','veh','ren','transit'],ch:[['veh','Vehicles','#2ed3e6'],['energy','Energy','#ffa63d']]},
+traffic:{t:'Traffic',l:'traffic',k:['veh','speed','cong','inc'],sl:['veh','pop','transit'],btn:['acc','Simulate accident'],ch:[['cong','Congestion','#ffa63d'],['veh','Vehicles','#2ed3e6']]},
+energy:{t:'Energy',l:'energy',k:['energy','ren','peak','eff'],sl:['pop','ren','industry'],abs:1,ch:[['energy','Demand MW','#ffa63d'],['renMW','Renewable MW','#35d39a']]},
+env:{t:'Environment',l:'env',k:['aqi','co2','temp','green'],sl:['veh','industry','green','ren'],ch:[['aqi','AQI','#35d39a'],['co2','CO₂ t/h','#ffa63d']]},
+transit:{t:'Public Transit',l:'transit',k:['tveh','delay','util','teff'],sl:['transit','pop'],btn:['dis','Service disruption'],ch:[['util','Network load %','#8b7bff'],['delay','Delay','#ffa63d']]},
+scen:{t:'City Scenarios',l:'overview',k:['veh','energy','aqi','util'],sl:['pop','veh','ren','transit','green','industry'],ch:[['cong','Congestion','#ffa63d'],['aqi','AQI','#35d39a'],['util','Transit load','#8b7bff']]}};
+const SUBS={overview:'Monitor your city\'s performance and explore infrastructure insights.',traffic:'Vehicle flow, congestion and incidents across the road network.',energy:'Demand, renewable generation and peak load by building.',env:'Air quality, emissions and green coverage by district.',transit:'Routes, stations, vehicles and network load.',scen:'Apply presets, tune the city, then compare against a saved baseline.'};
+const PR={rush:['Rush Hour',{veh:135,hour:8.2}],green:['Green City',{ren:78,green:58,veh:72,industry:35}],transit:['Transit Expansion',{transit:185,veh:78}],weather:['Extreme Weather',{heat:12,ren:28,industry:60}],growth:['Population Growth',{pop:150,veh:120,transit:110}]};
+const LG={overview:'Buildings lit by time of day. Click any building to inspect it.',traffic:'Road colour: <span style="color:#2ed3e6">free flow</span> → <span style="color:#ffa63d">busy</span> → <span style="color:#ff5d5d">congested</span>',energy:'Building colour: <span style="color:#2ed3e6">low demand</span> → <span style="color:#ffa63d">high demand</span>',env:'Zones: <span style="color:#35d39a">good</span> · <span style="color:#ffa63d">moderate</span> · <span style="color:#ff5d5d">poor</span> air quality. Pins are monitoring stations.',transit:'Lines A (cyan), B (violet), C (green). Click stations for details.',infra:'Substations, bridges and hubs. <span style="color:#ffa63d">Amber</span> = maintenance.'};
+const LY=[['overview','Overview'],['traffic','Traffic'],['energy','Energy'],['env','Environment'],['transit','Transit'],['infra','Infrastructure']];
+const IC={overview:'<rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>',traffic:'<path d="M3 17h18M5 17l2-6h10l2 6M7 17v2M17 17v2"/>',energy:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',env:'<path d="M11 20A7 7 0 0 1 4 13c0-5 5-9 16-9 0 11-4 16-9 16zM4 21c3-5 6-8 10-10"/>',transit:'<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M9 21l2-4M15 21l-2-4"/>',scen:'<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>'};
+/* ---------- UI ---------- */
+const fmt=(k,v)=>MD[k][2]===2?v.toFixed(1):(v>=1000?v.toLocaleString():(Number.isInteger(v)?v:v.toFixed(1)));
+const hh=h=>String(Math.floor(h)).padStart(2,'0')+':'+String(Math.floor(h%1*60)).padStart(2,'0');
+const ser=(k,s=S)=>[...Array(24)].map((_,h)=>M(s,h)[k]);
+function spark(a,c){const mx=Math.max(...a),mn=Math.min(...a),r=mx-mn||1;return `<svg viewBox="0 0 70 22"><polyline fill="none" stroke="${c}" stroke-width="1.6" points="${a.map((v,i)=>(i*70/23).toFixed(1)+','+(20-(v-mn)/r*18).toFixed(1)).join(' ')}"/></svg>`}
+let toastT;function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('s');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('s'),1900)}
+function buildNav(){$('#nav').innerHTML=Object.keys(PG).map(k=>`<button class="nv ${S.page===k?'on':''}" data-p="${k}"><svg viewBox="0 0 24 24">${IC[k==='overview'?'overview':k]}</svg>${PG[k].t}</button>`).join('');
+$('#ly').innerHTML=LY.map(l=>`<button class="b ${S.layer===l[0]?'on':''}" data-l="${l[0]}">${l[1]}</button>`).join('')}
+function controls(){const p=PG[S.page];let h='<h3>Simulation controls</h3>';
+if(S.page==='scen')h+='<div class="chips">'+Object.keys(PR).map(k=>`<button class="b" data-pr="${k}">${PR[k][0]}</button>`).join('')+'</div>';
+h+=p.sl.map(k=>`<label class="sl"><span>${SL[k][0]}</span><input type="range" min="${SL[k][1]}" max="${SL[k][2]}" value="${S[k]}" data-s="${k}" aria-label="${SL[k][0]}"><b id="v_${k}">${S[k]}%</b></label>`).join('');
+if(p.btn)h+=`<div class="chips"><button class="b am ${S[p.btn[0]]?'on':''}" data-t="${p.btn[0]}">${p.btn[1]}</button></div>`;
+$('#c1').innerHTML=h}
+function third(m){if(S.page==='scen'){const keys=['veh','cong','energy','ren','aqi','co2','util'];let h='<h3>Baseline vs current</h3><div class="chips"><button class="b" id="sb">Save baseline</button><button class="b" id="cp">Copy CSV</button><button class="b" id="rs">Reset all</button></div>';
+if(!base)return $('#c3').innerHTML=h+'<div class="ne">Save a baseline, apply a preset, then compare results.</div>';
+h+='<table><tr><th></th><th>Base</th><th>Now</th><th>Δ</th></tr>'+keys.map(k=>{const a=base.m[k],b=m[k],d=a?(b-a)/a*100:0,good=MD[k][2]===1?d>0:d<0,c=Math.abs(d)<.5?'ne':good?'up':'dn';return `<tr><td>${MD[k][0]}</td><td>${fmt(k,a)}</td><td>${fmt(k,b)}</td><td class="d ${c}">${d>0?'+':''}${d.toFixed(1)}%</td></tr>`}).join('')+'</table>';return $('#c3').innerHTML=h}
+const a=[];if(m.cong>=50)a.push(['am','Congestion at '+m.cong+'%. Arterial roads near Downtown are near capacity.']);if(S.acc)a.push(['rd','Incident reported on Central Avenue. One lane closed.']);if(m.aqi>70)a.push(['am','Air quality is moderate-to-poor at '+m.aqi+' AQI.']);if(m.util>85)a.push(['am','Transit network overloaded at '+m.util+'% load.']);if(S.dis)a.push(['rd','Transit disruption. Reduced service frequency.']);if(eAt(S,S.hour)>=.95*m.peak)a.push(['am','Energy demand is close to the estimated daily peak.']);if(S.heat)a.push(['am','Extreme weather stress: +'+S.heat+'°C above normal.']);if(!a.length)a.push(['gn','All systems nominal.']);
+$('#c3').innerHTML='<h3>Alerts</h3>'+a.map(x=>`<div class="al"><i style="background:var(--${x[0]==='am'?'am':x[0]==='rd'?'rd':'gn'})"></i><span>${x[1]}</span></div>`).join('')}
+function chart(){const p=PG[S.page],W=380,H=120,all=p.ch.map(c=>ser(c[0])),mx=p.abs?Math.max(...all.flat()):0;
+const lines=all.map((a,i)=>{const m2=p.abs?mx:Math.max(...a);return `<polyline fill="none" stroke="${p.ch[i][2]}" stroke-width="2" stroke-linejoin="round" points="${a.map((v,j)=>(10+j*(W-20)/23).toFixed(1)+','+(H-14-(v/(m2||1))*(H-28)).toFixed(1)).join(' ')}"/>`}).join('');
+const nx=10+S.hour*(W-20)/23,m=M(S,S.hour);
+$('#c2').innerHTML=`<h3>24-hour profile</h3><svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto" role="img" aria-label="24 hour trend chart">${[0,6,12,18,23].map(x=>`<text x="${10+x*(W-20)/23}" y="${H-1}" fill="#8da2bd" font-size="9" text-anchor="middle">${x}h</text>`).join('')}<line x1="10" x2="${W-10}" y1="${H-14}" y2="${H-14}" stroke="#1d2f4d"/>${lines}<line x1="${nx}" x2="${nx}" y1="6" y2="${H-14}" stroke="#2ed3e6" stroke-dasharray="3 3"/></svg><div class="lgn">${p.ch.map(c=>`<span><i style="background:${c[2]}"></i>${c[1]}: <b style="color:#e8f0fa">${fmt(c[0],m[c[0]])}</b></span>`).join('')}</div>${p.abs?'':'<div class="ne" style="font-size:11px;margin-top:4px">Each line is scaled to its own maximum.</div>'}`}
+function kpis(){const p=PG[S.page],m=M(S,S.hour),d=M(DEF,S.hour);$('#kp').innerHTML=p.k.map(k=>{const dv=d[k]?(m[k]-d[k])/d[k]*100:0,t=MD[k][2],good=t===1?dv>0:dv<0,c=t===2||Math.abs(dv)<.1?'ne':good?'up':'dn';return `<div class="kc"><div class="l">${MD[k][0]}</div><div class="r"><div class="v">${fmt(k,m[k])}<small>${MD[k][1]}</small></div>${spark(ser(k),'#2ed3e6')}</div><div class="d ${c}">${dv>0?'+':''}${dv.toFixed(1)}% vs. default</div></div>`}).join('');return m}
+function head(){const hr=new Date().getHours();$('#ttl').textContent=S.page==='overview'?(hr<12?'Good morning':hr<18?'Good afternoon':'Good evening')+', City Operator':PG[S.page].t;$('#sub').textContent=SUBS[S.page];$('#lgd').innerHTML=LG[S.layer];$('#pp').textContent=S.playing?'Pause':'Play';$('#sp').textContent=S.speed+'×'}
+function tick(){const m=kpis();$('#clk').textContent=hh(S.hour);chart();third(m);if(world)world.apply(m)}
+function setPage(p){S.page=p;S.layer=PG[p].l;buildNav();controls();head();tick();save()}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-p],[data-l],[data-pr],[data-t],#sb,#cp,#rs,#pp,#sp,#rc');if(!t)return;
+if(t.dataset.p)setPage(t.dataset.p);else if(t.dataset.l){S.layer=t.dataset.l;buildNav();head();tick();save()}
+else if(t.dataset.pr){const h=S.hour;S={...S,...DEF,hour:h,...PR[t.dataset.pr][1]};controls();head();tick();save();toast(PR[t.dataset.pr][0]+' applied')}
+else if(t.dataset.t){S[t.dataset.t]=S[t.dataset.t]?0:1;controls();tick();save()}
+else if(t.id==='sb'){base={m:M(S,S.hour)};tick();save();toast('Baseline saved')}
+else if(t.id==='cp'&&base){const m=M(S,S.hour),csv='metric,baseline,current\n'+['veh','cong','energy','ren','aqi','co2','util'].map(k=>`${MD[k][0]},${base.m[k]},${m[k]}`).join('\n');try{navigator.clipboard.writeText(csv).then(()=>toast('CSV copied'),()=>toast('Clipboard unavailable'))}catch(x){toast('Clipboard unavailable')}}
+else if(t.id==='rs'){const h=S.hour;S={...S,...DEF,hour:h};controls();tick();save();toast('Scenario reset')}
+else if(t.id==='pp'){S.playing=!S.playing;head();save()}else if(t.id==='sp'){S.speed=S.speed===1?2:S.speed===2?4:1;head()}else if(t.id==='rc'&&world)world.reset()});
+document.addEventListener('input',e=>{const k=e.target.dataset.s;if(!k)return;S[k]=+e.target.value;$('#v_'+k).textContent=S[k]+'%';tick();save()});
+/* ---------- 3D city ---------- */
+let world=null;
+function build3d(){const cv=$('#cv');let R;try{R=new THREE.WebGLRenderer({canvas:cv,antialias:true})}catch(e){$('#nogl').style.display='grid';return null}
+R.setPixelRatio(Math.min(devicePixelRatio,2));R.shadowMap.enabled=true;
+const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(38,1,1,500),hemi=new THREE.HemisphereLight(0x9ec5ff,0x0a1020,.6),sun=new THREE.DirectionalLight(0xbcd4ff,.8);
+sun.position.set(-40,70,30);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);Object.assign(sun.shadow.camera,{left:-60,right:60,top:60,bottom:-60,near:10,far:200});sc.add(hemi,sun);
+let sd=7;const rnd=()=>(sd=(sd*16807)%2147483647)/2147483647;const mat=(c,o)=>new THREE.MeshStandardMaterial({color:c,roughness:.6,metalness:.15,...o});
+const gr=new THREE.Mesh(new THREE.PlaneGeometry(220,220),mat(0x0b1527));gr.rotation.x=-Math.PI/2;gr.receiveShadow=true;sc.add(gr);
+const grid=new THREE.GridHelper(150,30,0x16304f,0x10213a);grid.position.y=.03;sc.add(grid);
+const water=new THREE.Mesh(new THREE.PlaneGeometry(160,40),new THREE.MeshStandardMaterial({color:0x0e3a5c,roughness:.3,metalness:.4}));water.rotation.x=-Math.PI/2;water.position.set(0,.05,58);sc.add(water);
+const roads=[],cars=[],B=[],infra=[],lines=[],trains=[],discs=[],pins=[];
+for(let k=0;k<=9;k++){const p=(k-4.5)*8,w=(k===4||k===5)?1.5:.6+rnd()*.6;[['x',new THREE.BoxGeometry(76,.1,2.2),[0,.07,p]],['z',new THREE.BoxGeometry(2.2,.1,76),[p,.07,0]]].forEach(([ax,ge,ps])=>{const m=new THREE.Mesh(ge,new THREE.MeshStandardMaterial({color:0x17233a,roughness:.7}));m.position.set(...ps);m.receiveShadow=true;sc.add(m);roads.push({ax,pos:p,m,w})})}
+const accR=roads[8];const tc={};
+function wt(w,h){const k=Math.round(w)+'_'+Math.round(h/2);if(tc[k])return tc[k];const c=document.createElement('canvas');c.width=c.height=32;const x=c.getContext('2d');x.fillStyle='#000';x.fillRect(0,0,32,32);for(let a=0;a<4;a++)for(let b=0;b<4;b++)if(rnd()<.5){x.fillStyle=rnd()<.8?'#ffe3ae':'#9fe8ff';x.fillRect(a*8+2,b*8+2,4,4)}const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.magFilter=THREE.NearestFilter;t.repeat.set(Math.max(1,Math.round(w/1.2)),Math.max(1,Math.round(h/1.6)));return tc[k]=t}
+const NM=['Atlas','Meridian','Helix','Northwind','Aurora','Vertex','Cobalt','Lumen','Solstice','Harbor','Orion','Kestrel'],parks=['2,2','6,6','4,7','7,3'],DS={dc:['Downtown Core',38000,1.1,94,1.1],hq:['Harbor Quarter',21000,.8,71,.8],ei:['Eastside Industrial',6000,.9,48,1.5],wf:['Westfield Residential',52000,.7,66,.75],ng:['Northgate',33000,.9,78,.9]};
+function dist(i,j){return Math.hypot(i-4,j-4)<1.9?'dc':j>=6?'hq':(i>=6&&j<=2)?'ei':i<=2?'wf':'ng'}
+for(let i=0;i<9;i++)for(let j=0;j<9;j++){const cx=(i-4)*8,cz=(j-4)*8;
+if(parks.includes(i+','+j)){const p=new THREE.Mesh(new THREE.BoxGeometry(6,.15,6),mat(0x14513a));p.position.set(cx,.1,cz);sc.add(p);for(let t=0;t<5;t++){const tr=new THREE.Mesh(new THREE.ConeGeometry(.55,1.8,6),mat(0x1f8a5c));tr.position.set(cx+(rnd()-.5)*4.5,1,cz+(rnd()-.5)*4.5);sc.add(tr)}continue}
+const d=dist(i,j),dc=Math.hypot(i-4,j-4),lots=d==='dc'?(rnd()<.6?[[0,0,4.4]]:[[-1.5,0,2.6],[1.5,0,2.6]]):[[-1.5,-1.5,2.7],[1.5,1.5,2.7]];
+lots.forEach(l=>{const w=l[2],h=d==='dc'?10+rnd()*10+(3-dc)*5:d==='hq'?5+rnd()*5:d==='ei'?3+rnd()*2:d==='wf'?3+rnd()*4:6+rnd()*7,type=d==='dc'?'Skyscraper':d==='hq'?'Mixed-use':d==='ei'?'Industrial plant':d==='wf'?'Residential':'Office tower';
+const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,w),mat(0x22385c,{emissive:0xffffff,emissiveMap:wt(w,h),emissiveIntensity:.8}));m.position.set(cx+l[0],h/2,cz+l[1]);m.castShadow=m.receiveShadow=true;m.userData={k:'b',i:B.length};sc.add(m);
+B.push({m,d,h,w,type,name:NM[B.length%NM.length]+' '+(type==='Skyscraper'?'Tower':type==='Residential'?'Residences':type==='Industrial plant'?'Works':type==='Mixed-use'?'Exchange':'Plaza'),rel:0,occ:55+rnd()*38})});}
+const maxV=Math.max(...B.map(b=>b.w*b.w*b.h*(b.type==='Industrial plant'?1.6:1)));B.forEach(b=>b.rel=cl(b.w*b.w*b.h*(b.type==='Industrial plant'?1.6:1)/maxV,.12,1));
+for(const x of [-12,12]){const br=new THREE.Mesh(new THREE.BoxGeometry(2.6,.3,26),mat(0x2a4a6b));br.position.set(x,.5,49);br.castShadow=true;sc.add(br)}
+/* cars */
+for(let i=0;i<160;i++){const m=new THREE.Mesh(new THREE.BoxGeometry(1,.45,.5),new THREE.MeshBasicMaterial({color:0xcfe6ff}));const r=roads[Math.floor(rnd()*roads.length)];cars.push({m,r,t:rnd()*72-36,dir:rnd()<.5?1:-1,v:.7+rnd()*.6});sc.add(m)}
+/* transit */
+[{ax:'x',pos:4,c:0x2ed3e6},{ax:'z',pos:-12,c:0x8b7bff},{ax:'z',pos:20,c:0x35d39a}].forEach((L,li)=>{const m=new THREE.Mesh(L.ax==='x'?new THREE.BoxGeometry(76,.1,.7):new THREE.BoxGeometry(.7,.1,76),new THREE.MeshBasicMaterial({color:L.c}));m.position.set(L.ax==='x'?0:L.pos,.3,L.ax==='x'?L.pos:0);sc.add(m);lines.push(m);
+for(let s=-32;s<=32;s+=16){const st=new THREE.Mesh(new THREE.CylinderGeometry(1,1,.6,16),new THREE.MeshBasicMaterial({color:0xffffff}));st.position.set(L.ax==='x'?s:L.pos,.5,L.ax==='x'?L.pos:s);st.userData={k:'st',name:['Line A — Tram','Line B — Bus','Line C — Metro'][li]+' · Station '+((s+32)/16+1),line:li};sc.add(st);lines.push(st)}
+for(let n=0;n<8;n++){const t=new THREE.Mesh(L.ax==='x'?new THREE.BoxGeometry(3,.7,.9):new THREE.BoxGeometry(.9,.7,3),new THREE.MeshBasicMaterial({color:L.c}));t.material.color.multiplyScalar(1.3);sc.add(t);trains.push({m:t,L,n,ph:n/8})}});
+/* environment */
+const ZC={dc:[0,0],hq:[0,28],ei:[28,-28],wf:[-28,0],ng:[0,-30]};
+Object.keys(ZC).forEach(k=>{const m=new THREE.Mesh(new THREE.CircleGeometry(17,48),new THREE.MeshBasicMaterial({color:0x35d39a,transparent:true,opacity:.28,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.set(ZC[k][0],.2,ZC[k][1]);sc.add(m);discs.push({m,k})});
+[[-14,-14],[14,10],[0,30],[-30,14],[30,-24]].forEach(p=>{const m=new THREE.Mesh(new THREE.ConeGeometry(.8,3,6),new THREE.MeshBasicMaterial({color:0x2ed3e6}));m.position.set(p[0],1.6,p[1]);m.rotation.x=Math.PI;sc.add(m);pins.push(m)});
+/* infrastructure */
+[['Northgate Substation','Substation',-28,-28,71,0],['Eastside Substation','Substation',30,10,88,1],['Harbor Substation','Substation',4,33,54,0],['Central Transit Hub','Transit hub',-12,4,63,0],['Harbor Bridge West','Bridge',-12,48,47,0],['Harbor Bridge East','Bridge',12,48,52,0]].forEach(d=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(.9,.9,5,12),new THREE.MeshBasicMaterial({color:d[5]?0xffa63d:0x2ed3e6}));m.position.set(d[2],2.5,d[3]);m.userData={k:'inf',name:d[0],type:d[1],load:d[4],maint:d[5]};const ring=new THREE.Mesh(new THREE.TorusGeometry(2,.1,8,32),m.material);ring.rotation.x=Math.PI/2;ring.position.y=-2.3;m.add(ring);sc.add(m);infra.push(m)});
+const hl=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1,1,1)),new THREE.LineBasicMaterial({color:0x2ed3e6}));hl.visible=false;sc.add(hl);
+/* camera */
+let az=.8,pol=1,rad=78,tx=0,tz=0,goal=null,drag=false,mv=0,lx=0,ly=0,idle=0;
+const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches,cvs=$('#cv');
+function place(){cam.position.set(tx+rad*Math.sin(pol)*Math.sin(az),rad*Math.cos(pol),tz+rad*Math.sin(pol)*Math.cos(az));cam.lookAt(tx,0,tz)}
+cvs.addEventListener('pointerdown',e=>{drag=true;mv=0;lx=e.clientX;ly=e.clientY;idle=0;goal=null;cvs.setPointerCapture(e.pointerId)});
+cvs.addEventListener('pointermove',e=>{if(drag){const dx=e.clientX-lx,dy=e.clientY-ly;mv+=Math.abs(dx)+Math.abs(dy);lx=e.clientX;ly=e.clientY;if(e.buttons&2||e.shiftKey){const k=rad*.0016;tx+=-Math.cos(az)*dx*k-Math.sin(az)*dy*k;tz+=Math.sin(az)*dx*k-Math.cos(az)*dy*k;tx=cl(tx,-40,40);tz=cl(tz,-40,40)}else{az-=dx*.006;pol=cl(pol-dy*.005,.3,1.35)}}else cvs.style.cursor=pick(e)?'pointer':'grab'});
+cvs.addEventListener('pointerup',e=>{drag=false;if(mv<5)select(pick(e))});cvs.addEventListener('contextmenu',e=>e.preventDefault());
+cvs.addEventListener('wheel',e=>{e.preventDefault();rad=cl(rad*(1+e.deltaY*.001),24,130);idle=0},{passive:false});
+const ray=new THREE.Raycaster(),v2=new THREE.Vector2();
+function pick(e){const r=cvs.getBoundingClientRect();v2.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);ray.setFromCamera(v2,cam);const L=S.layer,t=[...(L==='infra'?infra:[]),...(L==='transit'?lines.filter(x=>x.userData.k):[]),...B.map(b=>b.m)].filter(o=>o.visible!==false);const h=ray.intersectObjects(t,false)[0];return h&&h.object}
+function select(o){if(!o){hl.visible=false;return info(null)}const bx=new THREE.Box3().setFromObject(o),s=bx.getSize(new THREE.Vector3()),c=bx.getCenter(new THREE.Vector3());hl.position.copy(c);hl.scale.set(s.x*1.05,s.y*1.05,s.z*1.05);hl.visible=true;info(o.userData)}
+let cur=null;function info(u){cur=u;renderInfo()}
+function renderInfo(){const e=$('#info'),m=M(S,S.hour);if(!cur){e.innerHTML='<div class="hint">Click a building, substation or station to inspect it. Drag to rotate, scroll to zoom, right-drag to pan.</div>';return}
+if(cur.k==='b'){const b=B[cur.i],D=DS[b.d],kw=Math.round(b.w*b.w*b.h*(b.type==='Industrial plant'?1.6:1)*1.3*(m.energy/82.4)*(.6+.4*hfOf(S.hour))),occ=Math.round(cl(b.occ*(.5+.5*hfOf(S.hour)+.2),8,99)),al=Math.round(m.aqi*D[4]);
+e.innerHTML=`<h4>${b.name}</h4><div class="t">${b.type.toUpperCase()}</div><div class="rw"><span>District</span><span>${D[0]}</span></div><div class="rw"><span>Energy use</span><span>${kw.toLocaleString()} kW</span></div><div class="rw"><span>Occupancy</span><span>${occ}%</span></div><div class="rw"><span>Status</span><span style="color:${b.rel>.8&&m.energy>85?'var(--am)':'var(--gn)'}">${b.rel>.8&&m.energy>85?'High load':'Nominal'}</span></div><div class="rw"><span>District pop.</span><span>${Math.round(D[1]*S.pop/100).toLocaleString()}</span></div><div class="rw"><span>Traffic density</span><span>${Math.round(cl(m.cong*D[2],0,100))}%</span></div><div class="rw"><span>Air quality</span><span>${al} AQI</span></div><div class="rw"><span>Transit access</span><span>${Math.round(cl(D[3]*(.6+S.transit/250),5,99))}%</span></div>`}
+else if(cur.k==='inf')e.innerHTML=`<h4>${cur.name}</h4><div class="t">${cur.type.toUpperCase()}</div><div class="rw"><span>Status</span><span style="color:${cur.maint?'var(--am)':'var(--gn)'}">${cur.maint?'Maintenance':'Operational'}</span></div><div class="rw"><span>Load</span><span>${Math.min(99,Math.round(cur.load*(m.energy/82.4)))}%</span></div>`;
+else e.innerHTML=`<h4>${cur.name}</h4><div class="t">TRANSIT STATION</div><div class="rw"><span>Network load</span><span>${m.util}%</span></div><div class="rw"><span>Avg delay</span><span>${m.delay} min</span></div><div class="rw"><span>Vehicles in service</span><span>${m.tveh}</span></div>`}
+const col=new THREE.Color(),c1=new THREE.Color(0x2ed3e6),c2=new THREE.Color(0xffa63d),c3=new THREE.Color(0xff4d4d),cg=new THREE.Color(0x35d39a);
+const rc=r=>cl(MM.cong/100*r.w+(S.acc&&r===accR?.5:0),0,1),rcol=t=>t<.5?col.copy(c1).lerp(c2,t*2):col.copy(c2).lerp(c3,(t-.5)*2);
+let MM=M(S,S.hour);
+function apply(m){MM=m;const L=S.layer,hf=hfOf(S.hour),day=cl(Math.sin((S.hour-6)/12*Math.PI),0,1),nt=1-day;
+sc.background=new THREE.Color(0x050b18).lerp(new THREE.Color(0x1b3350),day*.75);sc.fog.color.copy(sc.background);hemi.intensity=.45+.6*day;sun.intensity=.4+.9*day;
+B.forEach(b=>{const t=b.m.material;if(L==='energy'){const x=cl(b.rel*(m.energy/82.4)*(.5+hf*.7),0,1);t.color.copy(c1).lerp(c2,x);t.emissive.copy(t.color);t.emissiveIntensity=.5+.5*x}else if(L==='overview'||L==='infra'){t.color.set(0x22385c).lerp(new THREE.Color(0x3d6da3),cl(b.h/22,0,1));t.emissive.set(0xffffff);t.emissiveIntensity=.3+.9*nt}else{t.color.set(0x111c31);t.emissive.set(0xffffff);t.emissiveIntensity=.12+.35*nt}});
+roads.forEach(r=>{r.m.material.color.copy(L==='traffic'?rcol(rc(r)):col.set(0x17233a));r.m.material.emissive.copy(L==='traffic'?r.m.material.color:col.set(0));r.m.material.emissiveIntensity=L==='traffic'?.5:0});
+const nC=cl(Math.round(m.veh/24830*90),10,160);cars.forEach((c,i)=>{c.m.visible=i<nC&&(L==='traffic'||L==='overview'||L==='infra');c.m.material.color.copy(L==='traffic'?rcol(rc(c.r)):col.set(0xcfe6ff))});
+lines.forEach(x=>x.visible=L==='transit'||L==='infra');const pl=cl(Math.round(m.tveh/120*4),1,8);trains.forEach(t=>t.m.visible=(L==='transit'||L==='infra')&&t.n<pl);
+discs.forEach(d=>{const D=DS[d.k],a=m.aqi*D[4];d.m.visible=L==='env';d.m.material.color.copy(a<50?cg:a<100?c2:c3).lerp(c2,a<50?cl((a-35)/30,0,.5):0)});pins.forEach(p=>p.visible=L==='env');infra.forEach(p=>p.visible=L==='infra'||(L==='overview'&&false));
+if(cur)renderInfo()}
+function size(){const s=$('#stage');R.setSize(s.clientWidth,s.clientHeight,false);cam.aspect=s.clientWidth/s.clientHeight;cam.updateProjectionMatrix()}
+new ResizeObserver(size).observe($('#stage'));size();place();
+let last=0,acc=0;
+function loop(t){requestAnimationFrame(loop);const dt=Math.min(.05,(t-last)/1000||0);last=t;
+if(S.playing)S.hour=(S.hour+dt*S.speed/3)%24;
+const sp=(MM.speed/58)*S.speed,k=Math.min(1,.5+S.speed*.2);
+cars.forEach(c=>{if(!c.m.visible)return;const v=7*c.v*sp*(1-.65*rc(c.r))*dt*c.dir;c.t+=v;if(c.t>37)c.t=-37;if(c.t<-37)c.t=37;const o=c.dir*.55;if(c.r.ax==='x'){c.m.position.set(c.t,.4,c.r.pos+o);c.m.rotation.y=0}else{c.m.position.set(c.r.pos-o,.4,c.t);c.m.rotation.y=Math.PI/2}});
+trains.forEach(tr=>{if(!tr.m.visible)return;tr.ph=(tr.ph+dt*.04*S.speed*(S.dis?.5:1))%1;const p=tr.ph<.5?tr.ph*2:2-tr.ph*2,x=-34+p*68;tr.m.position.set(tr.L.ax==='x'?x:tr.L.pos,.55,tr.L.ax==='x'?tr.L.pos:x)});
+const pu=1+.12*Math.sin(t/400);infra.forEach(m=>{if(m.visible)m.children[0].scale.setScalar(pu)});pins.forEach(p=>{if(p.visible)p.position.y=1.6+.25*Math.sin(t/500)});
+if(goal){az+=(goal.az-az)*.12;pol+=(goal.pol-pol)*.12;rad+=(goal.rad-rad)*.12;tx+=(0-tx)*.12;tz+=(0-tz)*.12;if(Math.abs(rad-goal.rad)<.2)goal=null}else if(!drag&&!reduced){idle+=dt;if(idle>4)az+=dt*.035}
+place();R.render(sc,cam);acc+=dt;if(acc>.25){acc=0;tick()}}
+requestAnimationFrame(loop);
+return{apply,reset(){goal={az:.8,pol:1,rad:78}}}}
+buildNav();controls();head();world=build3d();tick();
+</script></body></html>
